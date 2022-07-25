@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "devDependencies": {
+    "nodemon": "2.0.19"
+  },
+  "dependencies": {
+    "express": "4.18.1",
+    "node-fetch": "3.2.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CarlosBautistaDev/backend-mela.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CarlosBautistaDev/backend-mela/issues"
+  },
+  "homepage": "https://github.com/CarlosBautistaDev/backend-mela#readme",
+  "description": ""
+}

@@ -124,29 +124,7 @@ app.get("/api/items/:id", async (request, response) => {
   }
 });
 
-// 3. Recibe consulta de la busqueda con detalles por id
-app.get("/api/items/:id/description", async (request, response) => {
-  var id = request.params.id;
-  const url = `https://api.mercadolibre.com/items/${id}`;
-  const urlDesc = `https://api.mercadolibre.com/items/${id}/description`;
-  try {
-    const res = await fetch(url);
-    const reqDesc = await fetch(urlDesc);
-    const result = await res.json();
-    const resultDesc = await reqDesc.json();
-    const productoCompleto = {
-      author: {
-        ...setAuthor,
-      },
-      items: obtenerProducto(result),
-    };
-    productoCompleto.description = resultDesc.plain_text;
-    response.send(productoCompleto);
-  } catch (err) {
-    console.log(err);
-    response.status(404).end();
-  }
-});
+
 
 const PORT = 3001;
 const server = app.listen(PORT, () => {

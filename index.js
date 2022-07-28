@@ -1,8 +1,7 @@
 const express = require("express");
 const app = express();
-const fetch = (...args) =>
-  import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const cors = require("cors");
+const { default: fetch } = require("node-fetch");
 app.use(cors());
 
 // FUNCTIONS
@@ -86,6 +85,9 @@ app.get("/api/items", async (request, response) => {
   try {
     const res = await fetch(url);
     const result = await res.json();
+    if (result.error === 'resource not found' ) {
+      return response.status(404).send('error en la busqueda').end(); 
+    }
     const listaCompleta = {
       author: {
         ...setAuthor,
@@ -96,20 +98,23 @@ app.get("/api/items", async (request, response) => {
     response.send(listaCompleta);
   } catch (err) {
     console.log(err);
-    response.status(404).end();
+    response.status(404).send('error en la peticion').end();
   }
 });
-
 // 2. Recibe consulta de la busqueda por id
 app.get("/api/items/:id", async (request, response) => {
   var id = request.params.id;
   const url = `https://api.mercadolibre.com/items/${id}`;
   const urlDesc = `https://api.mercadolibre.com/items/${id}/description`;
+
   try {
     const res = await fetch(url);
     const reqDesc = await fetch(urlDesc);
     const result = await res.json();
     const resultDesc = await reqDesc.json();
+    if (result.error === 'resource not found' ) {
+      return response.status(404).send('error en la busqueda').end(); 
+    }
     const productoCompleto = {
       author: {
         ...setAuthor,
@@ -120,10 +125,9 @@ app.get("/api/items/:id", async (request, response) => {
     response.send(productoCompleto);
   } catch (err) {
     console.log(err);
-    response.status(404).end();
+    response.status(404).send('error en la peticion').end();
   }
 });
-
 
 
 const PORT = 3001;
@@ -131,3 +135,4 @@ const server = app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
 });
 
+module.exports = {app,server}
